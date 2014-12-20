@@ -1,0 +1,38 @@
+{
+  "name": "jwt-async",
+  "version": "1.0.0-beta2",
+  "description": "JSON Web Token (JWT) with asynchronicity",
+  "main": "index.js",
+  "scripts": {
+    "test": "make keys;./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/patbaker82/node-jwt-async"
+  },
+  "keywords": [
+    "jwt",
+    "async",
+    "claims",
+    "validations",
+    "encode",
+    "decode",
+    "verify"
+  ],
+  "author": "Patrick Baker <patricksbaker@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/patbaker82/node-jwt-async/issues"
+  },
+  "homepage": "https://github.com/patbaker82/node-jwt-async",
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.0.1",
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.6.0"
+  },
+  "engine": "node >= 0.10.0",
+  "dependencies": {
+    "lodash": "^2.4.1"
+  }
+}
