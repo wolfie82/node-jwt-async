@@ -1,6 +1,6 @@
 {
   "name": "jwt-async",
-  "version": "1.0.0-beta2",
+  "version": "1.0.1",
   "description": "JSON Web Token (JWT) with asynchronicity",
   "main": "index.js",
   "scripts": {
