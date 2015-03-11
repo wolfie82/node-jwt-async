@@ -167,7 +167,7 @@ The only default set, without options, is the algorithm.  Expect everything else
   * nbf (number) The time, typically epoch, for when the JWT should not be valid BEFORE
 * validations
   * exp (boolean) If true, the JWT's exp will be validated against the current time in epoch.  If the JWT is > than the current time a JWTExpiredError will be raised.
-  * nbf (boolean) If true, the JWT's nbf will be validated against the current time in epoch.  IF the JWT is < than the current time a JWTInvalidBeforeTimeError will be raised.
+  * nbf (boolean) If true, the JWT's nbf will be validated against the current time in epoch.  If the JWT is < than the current time a JWTInvalidBeforeTimeError will be raised.
   * custom (function (claims, callback)) If a function is set (see example), any custom validation of the claims can be done.  The function must take two args, claims and a callback.  If the callback is called with an argument it will be converted to a JWTValidationError.  Or you can pass a custom Error().
 
 ##### Example
@@ -404,7 +404,7 @@ JWTExpiredError is raised when the current time is after the JWT claims exp time
 
 #### JWTInvalidBeforeTimeError
 
-JWTInvalidBeforeTimeError is raised when the current time is before the JWT claims nbf time.  This error also exposes an `invalidBefore` property on the error object that reflects when the JWT will be valid after.  Note that you must have nbf validations enabled.
+JWTInvalidBeforeTimeError is raised when the JWT claims nbf time is before the current time.  This error also exposes an `invalidBefore` property on the error object that reflects when the JWT will be valid after.  Note that you must have nbf validations enabled.
 
 ## Algorithms supported
 
