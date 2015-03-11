@@ -135,7 +135,7 @@ The only default set, without options, is the algorithm.  Expect everything else
 
 * crypto
   * algorithm (string) - See below for acceptable algorithms
-  * secret (string|buffer) - If using `HS*`, this is the secret used for the symmetric signing 
+  * secret (string|buffer) - If using `HS*`, this is the secret used for the symmetric signing
   * privateKey (string|buffer) - If using `RS*`, `ES*` this is the private key used for signing JWT's
   * publicKey (string|buffer) - If using `RS*`, `ES*` this is the public key used for verifying JWT's
 * claims
@@ -217,7 +217,7 @@ jwt.sign({iat: false, nbf: 1419405977}, function (err, data) {
 jwt.verify(data, function (err, data) {
   // log Error object
   if (err) console.log(err);
-  
+
   // log decoded and verified JWT object
   console.log(data);
 });
@@ -234,7 +234,7 @@ Note that validations are only processed AFTER a jwt is successfully verified.  
   * custom (function) - Set a custom validation function
   * nbf (boolean) - Set true to validate nbf in JWT
   * exp (boolean) - Set true to validate exp in JWT
-  
+
 ##### Example
 
 ```javascript
@@ -242,7 +242,7 @@ var validations = {
   custom: function (claims, callback) {
     // Custom logic here, return an error to fail the validation
     if (claims.customClaim === 10) callback(new Error('This is bad!');
-    
+
     // Return successful
     callback();
   },
@@ -369,11 +369,19 @@ For methods that are callback based an error will be set on callback if neccessa
 
 #### JWTError
 
-JWTError() is typically raised for generic type of error events.  IE you tried to sign a JWT with algorithm ES256, but you don't have a privateKey set.
+JWTError is typically raised for generic type of error events.  IE you tried to sign a JWT with algorithm ES256, but you don't have a privateKey set.
 
 #### JWTValidationError
 
-JWTValidationError()'s are raised when a JWT fails the validation process.  IE either the library wasn't able to verify that the JWT signed correctly, tampered with, failed validation such as it expired.
+JWTValidationError is raised when a JWT fails the basic validation process.  IE either the library wasn't able to verify that the JWT signed correctly, it was tampered with, unparseable, etc.
+
+#### JWTExpiredError
+
+JWTExpiredError is raised when the current time is after the JWT claims exp time.  This error also exposes an `expiredAt` property on the error object that reflects when the JWT expired.  Note that you must have exp validations enabled.
+
+#### JWTInvalidBeforeTimeError
+
+JWTInvalidBeforeTimeError is raised when the current time is before the JWT claims nbf time.  This error also exposes an `invalidBefore` property on the error object that reflects when the JWT will be valid after.  Note that you must have nbf validations enabled.
 
 ## Algorithms supported
 

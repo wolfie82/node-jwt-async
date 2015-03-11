@@ -278,6 +278,48 @@ describe('JWT', function () {
           });
         });
       });
+
+      it('should not verify with unparsable crypto header', function (done) {
+        setupAlgorithm(v, jwt);
+        jwt.sign(null, function (signErr, signData) {
+          var parts = signData.split('.');
+          parts[0] = parts[0].substr(3);
+          signData = parts.join('.');
+
+          jwt.verify(signData, function (verifyErr, verifyData) {
+             expect(verifyErr instanceof JWT.JWTValidationError).to.be.true;
+             done();
+          });
+        });
+      });
+
+      it('should not verify with unparsable claims header', function (done) {
+        setupAlgorithm(v, jwt);
+        jwt.sign(null, function (signErr, signData) {
+          var parts = signData.split('.');
+          parts[0] = parts[1].substr(3);
+          signData = parts.join('.');
+
+          jwt.verify(signData, function (verifyErr, verifyData) {
+             expect(verifyErr instanceof JWT.JWTValidationError).to.be.true;
+             done();
+          });
+        });
+      });
+
+      it('should not verify with unparsable signature header', function (done) {
+        setupAlgorithm(v, jwt);
+        jwt.sign(null, function (signErr, signData) {
+          var parts = signData.split('.');
+          parts[0] = parts[2].substr(3);
+          signData = parts.join('.');
+
+          jwt.verify(signData, function (verifyErr, verifyData) {
+             expect(verifyErr instanceof JWT.JWTValidationError).to.be.true;
+             done();
+          });
+        });
+      });
     });
 
     describe('when validating claims with ' + v, function () {
@@ -343,7 +385,8 @@ describe('JWT', function () {
         // Check it errors
         jwt.sign(null, function (signErr, signData) {
           jwt.verify(signData, function (verifyErr, verifyData) {
-            expect(verifyErr instanceof JWT.JWTValidationError).to.be.true;
+            expect(verifyErr instanceof JWT.JWTInvalidBeforeTimeError).to.be.true;
+            expect(verifyErr.invalidBefore).to.be.a('number');
 
             // Put 60 seconds into the past
             jwt.setClaims({
@@ -376,7 +419,8 @@ describe('JWT', function () {
         // Check it errors
         jwt.sign(null, function (signErr, signData) {
           jwt.verify(signData, function (verifyErr, verifyData) {
-            expect(verifyErr instanceof JWT.JWTValidationError).to.be.true;
+            expect(verifyErr instanceof JWT.JWTExpiredError).to.be.true;
+            expect(verifyErr.expiredAt).to.be.a('number');
 
             // Put 60 seconds into future
             jwt.setClaims({
