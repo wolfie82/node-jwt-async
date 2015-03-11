@@ -121,6 +121,29 @@ jwt.sign(moreClaims, function (err, data) {
 });
 ```
 
+### Example using bluebird promises
+
+If you don't like callbacks, then feel free to use promises.  Here's how you can use this library with a promise library such as bluebird.
+
+```javascript
+var JWT = require('jwt-async');
+var BPromise = require('bluebird');
+
+var jwt = BPromise.promisifyAll(new JWT());
+jwt.setSecret('secret');
+
+jwt.signAsync()
+  .then(function (signed) {
+    return jwt.verifyAsync(signed);
+  })
+  .then(function (claims) {
+    console.log(claims);
+  })
+  .catch(JWT.JWTError, function (e) {
+    console.log(e);
+  });
+```
+
 ## API
 
 ### constructor
