@@ -404,7 +404,7 @@ JWTExpiredError is raised when the current time is after the JWT claims exp time
 
 #### JWTInvalidBeforeTimeError
 
-JWTInvalidBeforeTimeError is raised when the JWT claims nbf time is before the current time.  This error also exposes an `invalidBefore` property on the error object that reflects when the JWT will be valid after.  Note that you must have nbf validations enabled.
+JWTInvalidBeforeTimeError is raised when the current time is before the JWT claims nbf time.  This error also exposes an `invalidBefore` property on the error object that reflects when the JWT will be valid after.  Note that you must have nbf validations enabled.
 
 ## Algorithms supported
 
