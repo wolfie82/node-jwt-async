@@ -6,7 +6,7 @@ This implementation was developed against `draft-ietf-oauth-json-web-token-32`. 
 
 ## Why?
 
-In my search I found that not all node JWT implementations were built with async first in mind.  Additionally I wanted something that allowed more flexability, but was still able to do the heavy lifting.
+In my search I found that not all node JWT implementations were built with async first in mind.  Additionally I wanted something that allowed for more flexability, but was still able to do the heavy lifting.
 
 It's interesting to note that Node's Crypto.create methods are all **synchronous**.  However the writeable streams to these methods are **asynchronous**.  That means, with this library, the data you want to sign will be **asynchronously** streamed to the relevant crypto methods.  The crypto methods themselves do not perform any heavy crypto computation, therefore its quite fast.
 
@@ -75,14 +75,14 @@ var options = {
     // Set 'Expiration' claim
     exp: Math.floor(Date.now() / 1000) + 60,
     // Set a custom claim
-    customClaim: 'this is a custom claim'
+    custom: 'this is a custom claim'
   },
   // Default validations per verify
   validations: {
     custom: function (claims, next) {
       // Do custom validation of claims
       // IE verify audience with database, etc
-      if (customClaim === 'this is a custom claim') {
+      if (claims.custom === 'this is a custom claim') {
         next();
       } else {
         next(new Error('BOOM'));
@@ -166,9 +166,9 @@ The only default set, without options, is the algorithm.  Expect everything else
   * exp (number) The time, typically epoch, for when the JWT should not be valid AFTER
   * nbf (number) The time, typically epoch, for when the JWT should not be valid BEFORE
 * validations
-  * exp (boolean) If true, the JWT's exp will be validated against the current time.  If the JWT is > than the current time a JWTValidationError will be raised.
-  * nbf (boolean If true, the JWT's nbf will be validated against the current time.  IF the JWT is < than the current time a JWTValidationError will be raised.
-  * custom (function (claims, cb) If a function is set (see example), any custom validation of the claims can be done.  The function must take two args, claims and a callback.  If the callback is called with an argument it will be converted to a JWTValidationError.  Or you can pass a custom Error().
+  * exp (boolean) If true, the JWT's exp will be validated against the current time in epoch.  If the JWT is > than the current time a JWTExpiredError will be raised.
+  * nbf (boolean) If true, the JWT's nbf will be validated against the current time in epoch.  IF the JWT is < than the current time a JWTInvalidBeforeTimeError will be raised.
+  * custom (function (claims, callback)) If a function is set (see example), any custom validation of the claims can be done.  The function must take two args, claims and a callback.  If the callback is called with an argument it will be converted to a JWTValidationError.  Or you can pass a custom Error().
 
 ##### Example
 
@@ -254,7 +254,7 @@ Note that validations are only processed AFTER a jwt is successfully verified.  
 
 * (object) - Object of validations to be set on the instance.
 
-  * custom (function) - Set a custom validation function
+  * custom (function (claims, callback)) - Set a custom validation function
   * nbf (boolean) - Set true to validate nbf in JWT
   * exp (boolean) - Set true to validate exp in JWT
 
